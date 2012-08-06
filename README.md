@@ -1,21 +1,10 @@
-WHERE'S THE CODE?
-=================
+Dismiss
+=======
 
-You've just checked out the code from Git's "master" branch. In Drupal contrib
-module development, the code lives in branches that match a naming convention
-which mirrors the released version numbers.
+This module adds jQuery-powered Dismiss buttons to each block of messages that
+Drupal outputs. There are three default types: status, warning, and error
 
-For example:
-------------
-
-The code for a project's 7.x-1.x-dev version is found in the 7.x-1.x Git branch.
-
-To see a list of all branches for this project using Git on the command line,
-use the following command:
-
-    git branch -a
-
-To switch from master branch to the 7.x-1.x branch using Git on the command
-line, use the following command:
-
-    git checkout 7.x-1.x
+The Dismiss button allows you to quickly close messages and errors that get in
+the way of what you're doing. For themers, it's an easy way to sidestep other
+PHP errors that might be in your codebase. For end-users and site admins, it's
+a simple way to make your website a tad more user-friendly.

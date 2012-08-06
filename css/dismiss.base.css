@@ -1,0 +1,38 @@
+/**
+ * @file
+ *   Essential CSS for the Dismiss module
+ */
+
+/*
+ * All messages require relative positioning
+ * for the Dismiss button to be placed properly
+ */
+.messages {
+  position: relative;
+}
+
+/*
+ * Dismiss button
+ */
+.dismiss {
+  display: block;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 1.4em;
+  background: #f00;
+  color: #fff;
+
+  font-weight: 900;
+  text-align: center;
+  text-shadow: -1px -1px 0px rgba(0,0,0,0.4);
+  text-decoration: none;
+
+  border-radius: 3px;
+  box-shadow: 1px 1px 0px rgba(0,0,0,0.4);
+
+  cursor: pointer;
+}
+.dismiss:hover {
+  color: #000;
+}
