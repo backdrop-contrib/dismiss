@@ -5,5 +5,16 @@
  *   Main module file for Dismiss
  */
 
-// This blank file is intentionally included
-// so that the Drupal module can function
+/**
+ * Implements hook_modernizr_info().
+ */
+function dismiss_modernizr_info() {
+  $items = array();
+  $items['touch'] = array(
+    'type'   => 'test',
+    'module' => 'Dismiss',
+    'desc'   => 'Tests browser support for touch events.',
+  );
+
+  return $items;
+}
