@@ -9,11 +9,5 @@
  * Implements hook_modernizr_info().
  */
 function dismiss_modernizr_info() {
-  $tests = array();
-
-  $tests['touch'] = array(
-    'source' => 'Dismiss',
-  );
-
-  return $tests;
+  return array('touch');
 }
