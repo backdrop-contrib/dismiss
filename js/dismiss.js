@@ -10,7 +10,11 @@
 
       // Prepend the Dismiss button to each message box.
       $('.messages').each(function () {
-        $(this).prepend('<button class="dismiss"><span class="element-invisible">' + Drupal.t('Close this message.') + '</span></button>');
+        var flag = $(this).children().hasClass('dismiss');
+
+        if (!flag) {
+          $(this).prepend('<button class="dismiss"><span class="element-invisible">' + Drupal.t('Close this message.') + '</span></button>');
+        }
       });
 
       // When the Dismiss button is clicked hide this set of messages.
