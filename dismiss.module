@@ -5,6 +5,46 @@
  *   Main module file for Dismiss
  */
 
+define('DISMISS_SCOPE_DEFAULT', 'footer');
+
+/**
+ * Implements hook_menu().
+ */
+function dismiss_menu() {
+  $items['admin/config/user-interface/dismiss'] = array(
+    'title' => 'Dismiss',
+    'description' => 'Administrative settings for Dismiss module.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('dismiss_admin'),
+    'file' => 'dismiss.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('administer dismiss'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_page_build().
+ *
+ * Using hook_init() loads the JS files needlessly on autocomplete requests,
+ * private file requests, and other non-HTML-producing Drupal boots.
+ */
+function dismiss_page_build() {
+  // Add Dismiss CSS
+  drupal_add_css(drupal_get_path('module', 'dismiss') . '/css/dismiss.base.css');
+
+  // Add Dismiss JS
+  drupal_add_js(
+    drupal_get_path('module', 'dismiss') . '/js/dismiss.js',
+    array(
+      'type' => 'file',
+      'scope' => variable_get('dismiss_scope', DISMISS_SCOPE_DEFAULT),
+      'every_page' => TRUE,
+    )
+  );
+}
+
 /**
  * Implements hook_modernizr_info().
  */

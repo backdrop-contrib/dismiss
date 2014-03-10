@@ -4,6 +4,6 @@ core = 7.x
 package = User interface
 
 files[] = dismiss.module
+files[] = dismiss.admin.inc
 
-stylesheets[all][] = css/dismiss.base.css
-scripts[] = js/dismiss.js
+configure = admin/config/user-interface/dismiss
