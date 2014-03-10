@@ -30,5 +30,17 @@ function dismiss_admin() {
     '#default_value'  => variable_get('dismiss_scope', DISMISS_SCOPE_DEFAULT),
   );
 
+  // Inline JS or extra HTTP request?
+  $form['development']['dismiss_inline'] = array(
+    '#type'           => 'select',
+    '#title'          => t('Load JS for Dismiss inline?'),
+    '#description'    => t('The main JS file for Dismiss is very small, so inlining the script is better for performance.'),
+    '#options'        => array(
+      'inline' => t('inline'),
+      'file' => t('file'),
+    ),
+    '#default_value'  => variable_get('dismiss_inline', DISMISS_INLINE_DEFAULT),
+  );
+
   return system_settings_form($form);
 }

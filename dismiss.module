@@ -6,6 +6,8 @@
  */
 
 define('DISMISS_SCOPE_DEFAULT', 'footer');
+define('DISMISS_INLINE_DEFAULT', 'inline');
+
 
 /**
  * Implements hook_menu().
@@ -34,12 +36,26 @@ function dismiss_page_build() {
   // Add Dismiss CSS
   drupal_add_css(drupal_get_path('module', 'dismiss') . '/css/dismiss.base.css');
 
+  // Prepare JS settings
+  $dismiss_scope = variable_get('dismiss_scope', DISMISS_SCOPE_DEFAULT);
+  $dismiss_inline = variable_get('dismiss_inline', DISMISS_INLINE_DEFAULT);
+
+  // If the script needs to be inlined, pull the JS file contents and add to options.
+  if ($dismiss_inline == DISMISS_INLINE_DEFAULT) {
+    $dismiss_code = file_get_contents(drupal_get_path('module', 'dismiss') . '/js/dismiss.js');
+    $dismiss_type = 'inline';
+  }
+  else {
+    $dismiss_code = drupal_get_path('module', 'dismiss') . '/js/dismiss.js';
+    $dismiss_type = 'file';
+  }
+
   // Add Dismiss JS
   drupal_add_js(
-    drupal_get_path('module', 'dismiss') . '/js/dismiss.js',
+    $dismiss_code,
     array(
-      'type' => 'file',
-      'scope' => variable_get('dismiss_scope', DISMISS_SCOPE_DEFAULT),
+      'type' => $dismiss_type,
+      'scope' => $dismiss_scope,
       'every_page' => TRUE,
     )
   );
