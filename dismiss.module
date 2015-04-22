@@ -7,7 +7,7 @@
 
 define('DISMISS_SCOPE_DEFAULT', 'footer');
 define('DISMISS_INLINE_DEFAULT', 'inline');
-define('DISMISS_FADEOUT_DEFAULT', 5000);
+define('DISMISS_FADEOUT_DEFAULT', 0);
 
 
 /**
