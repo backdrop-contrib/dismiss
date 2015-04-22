@@ -48,12 +48,13 @@ function dismiss_admin() {
     '#title' => 'Behavior settings',
   );
 
+  // Option to fade
   $form['behavior']['dismiss_fadeout'] = array(
     '#type' => 'textfield',
     '#title' => t('Length of fadeout wait time (ms)'),
-    '#description'    => t('The length of time in milliseconds (max 4-digits) Dismiss should wait to automatically fadeout messages. A value of 0 (zero) disables this behavior.'),
-    '#size' => 1,
-    '#maxlength' => 4,
+    '#description' => t('The length of time in milliseconds (max 6-digits) Dismiss should wait to automatically fadeout messages. A value of 0 (zero) disables this behavior.'),
+    '#size' => 10,
+    '#maxlength' => 6,
     '#required' => TRUE,
     '#default_value' => variable_get('dismiss_fadeout', DISMISS_FADEOUT_DEFAULT),
   );
