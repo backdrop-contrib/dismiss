@@ -6,7 +6,7 @@
 (function ($) {
 
   Drupal.behaviors.dismiss = {
-    attach: function (context) {
+    attach: function (context, settings) {
 
       // Prepend the Dismiss button to each message box.
       $('.messages').each(function () {
@@ -21,6 +21,11 @@
       $('.dismiss').click(function () {
         $(this).parent().hide('fast');
       });
+
+      // Fadeout out status messages when positive value defined.
+      if (Drupal.settings.dismiss.fadeout > 0) {
+        setTimeout(function () { $('.messages.status').fadeOut(); }, Drupal.settings.dismiss.fadeout);
+      }
 
     }
   }
