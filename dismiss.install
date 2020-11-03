@@ -1,14 +1,20 @@
 <?php
 /**
  * @file
- * The dismiss module install file, which handles the install/uninstall tasks.
+ * Install, update, and uninstall functions for the Dismiss module.
  */
 
 /**
- * Implements hook_uninstall().
+ * Convert Dismiss variables to config.
  */
-function dismiss_uninstall() {
-  variable_del('dismiss_scope');
-  variable_del('dismiss_inline');
-  variable_del('dismiss_fadeout');
+function dismiss_update_1000(&$sandbox) {
+  $config = config('dismiss.settings');
+  $config->set('scope', update_variable_get('dismiss_scope', 'footer'));
+  $config->set('inline', update_variable_get('dismiss_inline', 'inline'));
+  $config->set('fadeout', update_variable_get('dismiss_fadeout', 0));
+  $config->save();
+
+  update_variable_del('dismiss_scope');
+  update_variable_del('dismiss_inline');
+  update_variable_del('dismiss_fadeout');
 }

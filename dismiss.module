@@ -1,73 +1,103 @@
 <?php
-
 /**
  * @file
- *   Main module file for Dismiss
+ * Allow Backdrop messages to be manually, or automatically, dismissed.
  */
 
-define('DISMISS_SCOPE_DEFAULT', 'footer');
-define('DISMISS_INLINE_DEFAULT', 'inline');
-define('DISMISS_FADEOUT_DEFAULT', 0);
-
+/**
+ * Implements hook_config_info().
+ */
+function dismiss_config_info() {
+  return array(
+    'dismiss.settings' => array(
+      'label' => t('Dismiss settings'),
+      'group' => t('Configuration'),
+    ),
+  );
+}
 
 /**
  * Implements hook_menu().
  */
 function dismiss_menu() {
-  $items['admin/config/user-interface/dismiss'] = array(
-    'title' => 'Dismiss',
-    'description' => 'Administrative settings for Dismiss module.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('dismiss_admin'),
-    'file' => 'dismiss.admin.inc',
-    'type' => MENU_NORMAL_ITEM,
-    'access arguments' => array('administer dismiss'),
+  return array(
+    'admin/config/user-interface/dismiss' => array(
+      'title' => 'Dismiss',
+      'description' => 'Configure Dismiss settings.',
+      'page callback' => 'backdrop_get_form',
+      'page arguments' => array('dismiss_admin_form'),
+      'access arguments' => array('administer site configuration'),
+    ),
   );
-
-  return $items;
 }
 
 /**
- * Implements hook_page_build().
- *
- * Using hook_init() loads the JS files needlessly on autocomplete requests,
- * private file requests, and other non-HTML-producing Drupal boots.
+ * Implements hook_preprocess_page().
  */
-function dismiss_page_build() {
-  // Add Dismiss CSS
-  drupal_add_css(drupal_get_path('module', 'dismiss') . '/css/dismiss.base.css');
+function dismiss_preprocess_page(&$variables) {
+  $config = config('dismiss.settings');
+  $module_path = backdrop_get_path('module', 'dismiss');
+  $scope = $config->get('scope');
+  $type = $config->get('inline');
 
-  // Prepare JS settings
-  $dismiss_scope = variable_get('dismiss_scope', DISMISS_SCOPE_DEFAULT);
-  $dismiss_inline = variable_get('dismiss_inline', DISMISS_INLINE_DEFAULT);
+  // Add CSS.
+  backdrop_add_css($module_path . '/css/dismiss.base.css');
 
-  // If the script needs to be inlined, pull the JS file contents and add to options.
-  if ($dismiss_inline == DISMISS_INLINE_DEFAULT) {
-    $dismiss_code = file_get_contents(drupal_get_path('module', 'dismiss') . '/js/dismiss.js');
-    $dismiss_type = 'inline';
+  // Add JS.
+  $code = $module_path . '/js/dismiss.js';
+  if ($type == 'inline') {
+    $code = file_get_contents($code);
   }
-  else {
-    $dismiss_code = drupal_get_path('module', 'dismiss') . '/js/dismiss.js';
-    $dismiss_type = 'file';
-  }
+  backdrop_add_js($code, array(
+    'type' => $type,
+    'scope' => $scope,
+    'every_page' => TRUE,
+  ));
 
-  // Add Dismiss JS
-  drupal_add_js(
-    $dismiss_code,
-    array(
-      'type' => $dismiss_type,
-      'scope' => $dismiss_scope,
-      'every_page' => TRUE,
-    )
-  );
-
-  // Pass fadeout value to JS
-  drupal_add_js(array('dismiss' => array('fadeout' => variable_get('dismiss_fadeout', DISMISS_FADEOUT_DEFAULT))), 'setting');
+  // Pass fadeout value to JS.
+  backdrop_add_js(array(
+    'dismiss' => array(
+      'fadeout' => $config->get('fadeout'),
+    ),
+  ), 'setting');
 }
 
 /**
- * Implements hook_modernizr_info().
+ * Form constructor for Dismiss administrative settings.
  */
-function dismiss_modernizr_info() {
-  return array('touch');
+function dismiss_admin_form($form, &$form_state) {
+  $config = config('dismiss.settings');
+  $form['#config'] = 'dismiss.settings';
+
+  $form['scope'] = array(
+    '#type' => 'select',
+    '#title' => t('Script location'),
+    '#description' => t("Where to place the script on the page. 'Footer' is generally recommended."),
+    '#options' => array(
+      'header' => t('Header'),
+      'footer' => t('Footer'),
+    ),
+    '#default_value' => $config->get('scope'),
+  );
+  $form['inline'] = array(
+    '#type' => 'select',
+    '#title' => t('Script type'),
+    '#description' => t("The type of javascript to be added to the page. 'Inline' is generally recommended for performance."),
+    '#options' => array(
+      'inline' => t('Inline'),
+      'file' => t('File'),
+    ),
+    '#default_value' => $config->get('inline'),
+  );
+  $form['fadeout'] = array(
+    '#type' => 'number',
+    '#title' => t('Display time'),
+    '#description' => t("The length of time (in milliseconds) messages are displayed before being automatically dismissed. Enter '0' to disable this behavior."),
+    '#default_value' => $config->get('fadeout'),
+    '#min' => 0,
+    '#max' => 999999,
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
 }
