@@ -1,7 +1,5 @@
 {
   "_config_name": "dismiss.settings",
-  "scope": "footer",
-  "inline": "inline",
   "fadeout": 0
 }
 

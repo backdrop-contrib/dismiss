@@ -1,11 +1,11 @@
 Dismiss
 =======
 
-This module allows Backdrop messages to be dismissed via buttons that are added
-to each block of messages. Additionally, a timeout can be set so status messages
-can be automatically dismissed (warnings and errors are never automatically
-dismissed). These features allow users to quickly close messages that might
-otherwise get in the way or cause distractions.
+This module allows Backdrop messages to be dismissed via links that are added to
+each message. Additionally, a timeout can be set so status messages can be
+automatically dismissed (warnings and errors are never automatically dismissed).
+These features allow users to quickly close messages that might otherwise get in
+the way or cause distractions.
 
 Installation
 ------------

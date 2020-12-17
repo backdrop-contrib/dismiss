@@ -35,29 +35,10 @@ function dismiss_menu() {
  * Implements hook_preprocess_page().
  */
 function dismiss_preprocess_page(&$variables) {
-  $config = config('dismiss.settings');
-  $module_path = backdrop_get_path('module', 'dismiss');
-  $scope = $config->get('scope');
-  $type = $config->get('inline');
-
-  // Add CSS.
-  backdrop_add_css($module_path . '/css/dismiss.base.css');
-
-  // Add JS.
-  $code = $module_path . '/js/dismiss.js';
-  if ($type == 'inline') {
-    $code = file_get_contents($code);
-  }
-  backdrop_add_js($code, array(
-    'type' => $type,
-    'scope' => $scope,
-    'every_page' => TRUE,
-  ));
-
   // Pass fadeout value to JS.
   backdrop_add_js(array(
     'dismiss' => array(
-      'fadeout' => $config->get('fadeout'),
+      'fadeout' => config_get('dismiss.settings', 'fadeout'),
     ),
   ), 'setting');
 }
@@ -69,26 +50,6 @@ function dismiss_admin_form($form, &$form_state) {
   $config = config('dismiss.settings');
   $form['#config'] = 'dismiss.settings';
 
-  $form['scope'] = array(
-    '#type' => 'select',
-    '#title' => t('Script location'),
-    '#description' => t("Where to place the script on the page. 'Footer' is generally recommended."),
-    '#options' => array(
-      'header' => t('Header'),
-      'footer' => t('Footer'),
-    ),
-    '#default_value' => $config->get('scope'),
-  );
-  $form['inline'] = array(
-    '#type' => 'select',
-    '#title' => t('Script type'),
-    '#description' => t("The type of javascript to be added to the page. 'Inline' is generally recommended for performance."),
-    '#options' => array(
-      'inline' => t('Inline'),
-      'file' => t('File'),
-    ),
-    '#default_value' => $config->get('inline'),
-  );
   $form['fadeout'] = array(
     '#type' => 'number',
     '#title' => t('Display time'),

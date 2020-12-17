@@ -18,3 +18,13 @@ function dismiss_update_1000(&$sandbox) {
   update_variable_del('dismiss_inline');
   update_variable_del('dismiss_fadeout');
 }
+
+/**
+ * Remove old config settings.
+ */
+function dismiss_update_1001(&$sandbox) {
+  $config = config('dismiss.settings');
+  $config->clear('scope');
+  $config->clear('inline');
+  $config->save();
+}

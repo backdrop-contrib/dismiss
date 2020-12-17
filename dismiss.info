@@ -2,5 +2,7 @@ name = Dismiss
 description = Allow Backdrop messages to be manually, or automatically, dismissed.
 backdrop = 1.x
 type = module
+stylesheets[all][] = css/dismiss.css
+scripts[] = js/dismiss.js
 package = User interface
 configure = admin/config/user-interface/dismiss
