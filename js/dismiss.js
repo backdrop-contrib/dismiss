@@ -8,25 +8,32 @@
 Backdrop.behaviors.dismiss = {
   attach: function(context, settings) {
 
-    // Prepend the Dismiss button to each message box.
-    $('.messages').each(function() {
-      if ($(this).children().not('.dismiss')) {
-        $(this).prepend('<button class="dismiss"><span class="element-invisible">' + Backdrop.t('Close this message.') + '</span></button>');
-      }
-    });
+    // Prepend a Dismiss link to each message.
+    var dismissLink = '<a href="#" class="dismiss" title="' + Backdrop.t('Dismiss') + '"><span class="element-invisible">' + Backdrop.t('Dismiss') + '</span></a>';
+    $('.messages').once('dismiss').prepend(dismissLink);
 
-    // When the Dismiss button is clicked, hide this set of messages.
-    $('.dismiss').click(function(event) {
-      $(this).parent().hide('fast');
-      // In case this message is inside a form, prevent form submission.
+    // When a Dismiss link is clicked, hide the message.
+    $('a.dismiss').click(function(event) {
       event.preventDefault();
+      hideMessage($(this).parent());
     });
 
-    // Fadeout status messages when positive value defined.
+    // Hide status messages automatically.
     if (Backdrop.settings.dismiss.fadeout > 0) {
       setTimeout(function() {
-        $('.messages.status').fadeOut();
+        hideMessage($('.messages.status'));
       }, Backdrop.settings.dismiss.fadeout);
+    }
+
+    /**
+     * Hide a message, and then the messages container (if empty).
+     */
+    function hideMessage(message) {
+      message.fadeOut('fast', function() {
+        if ($('.l-messages').children(':visible').size() == 0) {
+          $('.l-messages').hide();
+        }
+      });
     }
 
   }
