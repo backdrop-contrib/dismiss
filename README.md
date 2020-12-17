@@ -2,10 +2,10 @@ Dismiss
 =======
 
 This module allows Backdrop messages to be dismissed via links that are added to
-each message. Additionally, a timeout can be set so status messages can be
-automatically dismissed (warnings and errors are never automatically dismissed).
-These features allow users to quickly close messages that might otherwise get in
-the way or cause distractions.
+each message. Additionally, a timeout can be set so that `Status` and `Info`
+messages can be automatically dismissed (`Warnings` and `Errors` are never
+automatically dismissed). These features allow users to quickly close messages
+that might otherwise get in the way or cause distractions.
 
 Installation
 ------------
@@ -15,7 +15,7 @@ Installation
 
 - Visit the configuration page under Administration > Configuration > User
   Interface > Dismiss (admin/config/user-interface/dismiss) and configure the
-  settings as desired.
+  settings.
 
 Issues
 ------

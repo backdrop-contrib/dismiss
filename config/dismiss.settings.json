@@ -1,5 +1,5 @@
 {
   "_config_name": "dismiss.settings",
-  "fadeout": 0
+  "auto_dismiss": false,
+  "timeout": 10000
 }
-

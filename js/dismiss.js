@@ -19,10 +19,10 @@ Backdrop.behaviors.dismiss = {
     });
 
     // Hide status messages automatically.
-    if (Backdrop.settings.dismiss.fadeout > 0) {
+    if (Backdrop.settings.dismiss.auto_dismiss) {
       setTimeout(function() {
-        hideMessage($('.messages.status'));
-      }, Backdrop.settings.dismiss.fadeout);
+        hideMessage($('.messages.status, .messages.info'));
+      }, Backdrop.settings.dismiss.timeout);
     }
 
     /**

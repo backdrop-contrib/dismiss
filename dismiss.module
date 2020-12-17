@@ -35,10 +35,13 @@ function dismiss_menu() {
  * Implements hook_preprocess_page().
  */
 function dismiss_preprocess_page(&$variables) {
-  // Pass fadeout value to JS.
+  $config = config('dismiss.settings');
+
+  // Pass settings to JS.
   backdrop_add_js(array(
     'dismiss' => array(
-      'fadeout' => config_get('dismiss.settings', 'fadeout'),
+      'auto_dismiss' => $config->get('auto_dismiss'),
+      'timeout' => $config->get('timeout'),
     ),
   ), 'setting');
 }
@@ -50,14 +53,23 @@ function dismiss_admin_form($form, &$form_state) {
   $config = config('dismiss.settings');
   $form['#config'] = 'dismiss.settings';
 
-  $form['fadeout'] = array(
+  $form['auto_dismiss'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Dismiss <em>Status</em> and <em>Info</em> messages automatically'),
+    '#default_value' => $config->get('auto_dismiss'),
+  );
+  $form['timeout'] = array(
     '#type' => 'number',
-    '#title' => t('Display time'),
-    '#description' => t("The length of time (in milliseconds) messages are displayed before being automatically dismissed. Enter '0' to disable this behavior."),
-    '#default_value' => $config->get('fadeout'),
-    '#min' => 0,
-    '#max' => 999999,
-    '#required' => TRUE,
+    '#title' => t('After'),
+    '#description' => t('The number of milliseconds <em>Status</em> and <em>Info</em> messages will be displayed for, before being automatically dismissed.'),
+    '#default_value' => $config->get('timeout'),
+    '#field_suffix' => t('ms'),
+    '#min' => 1,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="auto_dismiss"]' => array('checked' => TRUE),
+      ),
+    ),
   );
 
   return system_settings_form($form);

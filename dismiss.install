@@ -20,11 +20,22 @@ function dismiss_update_1000(&$sandbox) {
 }
 
 /**
- * Remove old config settings.
+ * Update config settings.
  */
 function dismiss_update_1001(&$sandbox) {
   $config = config('dismiss.settings');
+
+  // Remove old config values.
   $config->clear('scope');
   $config->clear('inline');
+
+  // Update fadeout to timeout.
+  $fadeout = $config->get('fadeout');
+  $config->clear('fadeout');
+  $auto_dismiss = ($fadeout == 0) ? FALSE : TRUE;
+  $timeout = ($fadeout == 0) ? 10000 : $fadeout;
+  $config->set('auto_dismiss', $auto_dismiss);
+  $config->set('timeout', $timeout);
+
   $config->save();
 }
