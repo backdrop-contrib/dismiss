@@ -26,7 +26,7 @@ https://github.com/backdrop-contrib/dismiss/issues.
 Current Maintainers
 -------------------
 
-- [Peter Anderson](https://github.com/BWPanda)
+- Seeking maintainer(s)
 
 Credits
 -------
